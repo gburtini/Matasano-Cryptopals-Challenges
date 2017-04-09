@@ -1,86 +1,89 @@
-= Node.js / JavaScript solutions to the [https://cryptopals.com/](Matasano Cryptopals Challenges) = 
+Node.js / JavaScript solutions to the [Matasano Cryptopals Challenges](https://cryptopals.com/)
+========================================================================================================
+Usage
+-----
+- `npm start` will run all completed challenges. This uses `./run` in the current directory.
+- `./run -s N` will run challenge `N`. e.g., `./run -s 12` runs "12. Byte-at-a-time ECB decryption (Simple)".
+- `npm test` will run unit tests on the `lib/` functions.
 
-== Usage ==
-`npm start` will run all completed challenges. This uses `./run` in the current directory.
-`./run -s N` will run challenge `N`. e.g., `./run -s 12` runs "12. Byte-at-a-time ECB decryption (Simple)".
-`npm test` will run unit tests on the `lib/` functions.
-
+Challenges
+----------
 Set 1: Basics
-  01. Convert hex to base64
-  02. Fixed XOR
-  03. Single-byte XOR cipher
-  04. Detect single-character XOR
-  05. Implement repeating-key XOR
-  06. Break repeating-key XOR
-  07. AES in ECB mode
-  08. Detect AES in ECB mode
+- [Convert hex to base64](sets/1/1.js)
+- [Fixed XOR](sets/1/2.js)
+- [Single-byte XOR cipher](sets/1/3.js)
+- [Detect single-character XOR](sets/1/4.js)
+- [Implement repeating-key XOR](sets/1/5.js)
+- [Break repeating-key XOR](sets/1/6.js)
+- [AES in ECB mode](sets/1/7.js)
+- [Detect AES in ECB mode](sets/1/8.js)
 
 Set 2: Block crypto
-  09. Implement PKCS#7 padding
-  10. Implement CBC mode
-  11. An ECB/CBC detection oracle
-  12. Byte-at-a-time ECB decryption (Simple)
-  13. ECB cut-and-paste
-  14. Byte-at-a-time ECB decryption (Harder)
-  15. PKCS#7 padding validation
-  16. CBC bitflipping attacks
+- [Implement PKCS#7 padding](sets/2/9.js)
+- [Implement CBC mode](sets/2/10.js)
+- [An ECB/CBC detection oracle](sets/2/11.js)
+- [Byte-at-a-time ECB decryption (Simple)](sets/2/12.js)
+- [ECB cut-and-paste](sets/2/13.js)
+- [Byte-at-a-time ECB decryption (Harder)](sets/2/14.js)
+- [PKCS#7 padding validation](sets/2/15.js)
+- CBC bitflipping attacks
 
 Set 3: Block & stream crypto
-  17. The CBC padding oracle
-  18. Implement CTR, the stream cipher mode
-  19. Break fixed-nonce CTR mode using substitions
-  20. Break fixed-nonce CTR statistically
-  21. Implement the MT19937 Mersenne Twister RNG
-  22. Crack an MT19937 seed
-  23. Clone an MT19937 RNG from its output
-  24. Create the MT19937 stream cipher and break it
+- The CBC padding oracle
+- Implement CTR, the stream cipher mode
+- Break fixed-nonce CTR mode using substitions
+- Break fixed-nonce CTR statistically
+- Implement the MT19937 Mersenne Twister RNG
+- Crack an MT19937 seed
+- Clone an MT19937 RNG from its output
+- Create the MT19937 stream cipher and break it
 
 Set 4: Stream crypto and randomness
-  25. Break "random access read/write" AES CTR
-  26. CTR bitflipping
-  27. Recover the key from CBC with IV=Key
-  28. Implement a SHA-1 keyed MAC
-  29. Break a SHA-1 keyed MAC using length extension
-  30. Break an MD4 keyed MAC using length extension
-  31. Implement and break HMAC-SHA1 with an artificial timing leak
-  32. Break HMAC-SHA1 with a slightly less artificial timing leak
+- Break "random access read/write" AES CTR
+- CTR bitflipping
+- Recover the key from CBC with IV=Key
+- Implement a SHA-1 keyed MAC
+- Break a SHA-1 keyed MAC using length extension
+- Break an MD4 keyed MAC using length extension
+- Implement and break HMAC-SHA1 with an artificial timing leak
+- Break HMAC-SHA1 with a slightly less artificial timing leak
 
 Set 5: Diffie-Hellman and friends
-  33. Implement Diffie-Hellman
-  34. Implement a MITM key-fixing attack on Diffie-Hellman with parameter injection
-  35. Implement DH with negotiated groups, and break with malicious "g" parameters
-  36. Implement Secure Remote Password (SRP)
-  37. Break SRP with a zero key
-  38. Offline dictionary attack on simplified SRP
-  39. Implement RSA
-  40. Implement an E=3 RSA Broadcast attack
+- Implement Diffie-Hellman
+- Implement a MITM key-fixing attack on Diffie-Hellman with parameter injection
+- Implement DH with negotiated groups, and break with malicious "g" parameters
+- Implement Secure Remote Password (SRP)
+- Break SRP with a zero key
+- Offline dictionary attack on simplified SRP
+- Implement RSA
+- Implement an E=3 RSA Broadcast attack
 
 Set 6: RSA and DSA
-  41. Implement unpadded message recovery oracle
-  42. Bleichenbacher's e=3 RSA Attack
-  43. DSA key recovery from nonce
-  44. DSA nonce recovery from repeated nonce
-  45. DSA parameter tampering
-  46. RSA parity oracle
-  47. Bleichenbacher's PKCS 1.5 Padding Oracle (Simple Case)
-  48. Bleichenbacher's PKCS 1.5 Padding Oracle (Complete Case)
+- Implement unpadded message recovery oracle
+- Bleichenbacher's e=3 RSA Attack
+- DSA key recovery from nonce
+- DSA nonce recovery from repeated nonce
+- DSA parameter tampering
+- RSA parity oracle
+- Bleichenbacher's PKCS 1.5 Padding Oracle (Simple Case)
+- Bleichenbacher's PKCS 1.5 Padding Oracle (Complete Case)
 
 Set 7: Hashes
-  49. CBC-MAC Message Forgery
-  50. Hashing with CBC-MAC
-  51. Compression Ratio Side-Channel Attacks
-  52. Iterated Hash Function Multicollisions
-  53. Kelsey and Schneier's Expandable Messages
-  54. Kelsey and Kohno's Nostradamus Attack
-  55. MD4 Collisions
-  56. RC4 Single-Byte Biases
+- CBC-MAC Message Forgery
+- Hashing with CBC-MAC
+- Compression Ratio Side-Channel Attacks
+- Iterated Hash Function Multicollisions
+- Kelsey and Schneier's Expandable Messages
+- Kelsey and Kohno's Nostradamus Attack
+- MD4 Collisions
+- RC4 Single-Byte Biases
 
 Set 8: Abstract Algebra
-  57. Diffie-Hellman Revisited: Small Subgroup Confinement
-  58. Pollard's Method for Catching Kangaroos
-  59. Elliptic Curve Diffie-Hellman and Invalid-Curve Attacks
-  60. Single-Coordinate Ladders and Insecure Twists
-  61. Duplicate-Signature Key Selection in ECDSA (and RSA)
-  62. Key-Recovery Attacks on ECDSA with Biased Nonces
-  63. Key-Recovery Attacks on GCM with Repeated Nonces
-  64. Key-Recovery Attacks on GCM with a Truncated MAC
+- Diffie-Hellman Revisited: Small Subgroup Confinement
+- Pollard's Method for Catching Kangaroos
+- Elliptic Curve Diffie-Hellman and Invalid-Curve Attacks
+- Single-Coordinate Ladders and Insecure Twists
+- Duplicate-Signature Key Selection in ECDSA (and RSA)
+- Key-Recovery Attacks on ECDSA with Biased Nonces
+- Key-Recovery Attacks on GCM with Repeated Nonces
+- Key-Recovery Attacks on GCM with a Truncated MAC
