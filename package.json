@@ -1,0 +1,29 @@
+{
+  "name": "cryptopals",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "./run"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "aes-js": "^3.0.0",
+    "base-64": "^0.1.0",
+    "colors": "^1.1.2",
+    "commander": "^2.9.0",
+    "lodash": "^4.17.4",
+    "text-encoding": "^0.6.4",
+    "utf8": "^2.1.2"
+  },
+  "devDependencies": {
+    "eslint": "^3.18.0",
+    "eslint-config-airbnb": "^13.0.0",
+    "eslint-config-strawhouse": "^2.1.5",
+    "eslint-plugin-import": "^2.2.0",
+    "eslint-plugin-jsx-a11y": "^2.2.3",
+    "eslint-plugin-react": "^6.10.3"
+  }
+}
