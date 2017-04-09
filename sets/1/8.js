@@ -12,10 +12,7 @@ function challengeEight() {
 
   for (let line = 0; line < records.length; line++) {
     const record = decodeHex(records[line]).toString('ascii');
-
-    if (isEcb(record)) {
-      return `Line ${line} likely is AES-ECB encrypted.`;
-    }
+    if (isEcb(record)) return `Line ${line} likely is AES-ECB encrypted.`;
   }
 
   throw new Error('No AES-ECB encrypted lines found.');
