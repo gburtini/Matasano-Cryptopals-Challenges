@@ -15,7 +15,7 @@ dir.forEach((directoryName) => {
     set.forEach((challengeFile) => {
       if (path.extname(challengeFile) === '.js') {
         const basename = path.basename(challengeFile);
-        const challengeNumber = basename.substr(0, basename.lastIndexOf('.'));
+        const challengeNumber = parseInt(basename.substr(0, basename.lastIndexOf('.')), 10);
         const challengeFilePath = path.join(directoryPath, challengeFile);
 
         module.exports[challengeNumber] = require(challengeFilePath);

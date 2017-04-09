@@ -9,17 +9,17 @@ Usage
 Challenges
 ----------
 Set 1: Basics
-- [Convert hex to base64](sets/1/1.js)
-- [Fixed XOR](sets/1/2.js)
-- [Single-byte XOR cipher](sets/1/3.js)
-- [Detect single-character XOR](sets/1/4.js)
-- [Implement repeating-key XOR](sets/1/5.js)
-- [Break repeating-key XOR](sets/1/6.js)
-- [AES in ECB mode](sets/1/7.js)
-- [Detect AES in ECB mode](sets/1/8.js)
+- [Convert hex to base64](sets/1/01.js)
+- [Fixed XOR](sets/1/02.js)
+- [Single-byte XOR cipher](sets/1/03.js)
+- [Detect single-character XOR](sets/1/04.js)
+- [Implement repeating-key XOR](sets/1/05.js)
+- [Break repeating-key XOR](sets/1/06.js)
+- [AES in ECB mode](sets/1/07.js)
+- [Detect AES in ECB mode](sets/1/08.js)
 
 Set 2: Block crypto
-- [Implement PKCS#7 padding](sets/2/9.js)
+- [Implement PKCS#7 padding](sets/2/09.js)
 - [Implement CBC mode](sets/2/10.js)
 - [An ECB/CBC detection oracle](sets/2/11.js)
 - [Byte-at-a-time ECB decryption (Simple)](sets/2/12.js)
