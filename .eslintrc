@@ -1,3 +1,6 @@
 {
-  "extends": "strawhouse"
+  "extends": "strawhouse",
+  "rules": {
+    "new-cap": "off"
+  }
 }
