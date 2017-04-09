@@ -1,4 +1,4 @@
-Node.js / JavaScript solutions to the [Matasano Cryptopals Challenges](https://cryptopals.com/)
+JavaScript Solutions for the [Matasano Cryptopals Challenges](https://cryptopals.com/)
 ========================================================================================================
 Usage
 -----
