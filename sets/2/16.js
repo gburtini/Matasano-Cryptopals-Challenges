@@ -11,6 +11,13 @@ function bruteforceByteExchange(from, to) {
   }
   throw new Error(`Unable to find byte exchange for ${from} to ${to}.`);
 }
+function swapCharacterInNextBlock(block, location, from, to) {
+  const clonedArray = block.slice(0);
+  clonedArray[location] = String.fromCharCode(
+    clonedArray[location].charCodeAt(0) ^ bruteforceByteExchange(from, to)
+  );
+  return clonedArray;
+}
 
 const key = aes.randomKey();
 
@@ -48,15 +55,6 @@ function challengeSixteen() {
   // = is 61 in ascii or 00111101 in binary.
   const preflipped = ciphertextGenerator('-admin2true');
   const chunks = chunk(preflipped, 16);
-
-  function swapCharacterInNextBlock(block, location, from, to) {
-    // TODO: don't mutate.
-    block[location] = String.fromCharCode(
-      block[location].charCodeAt(0) ^ bruteforceByteExchange(from, to)
-    );
-    return block;
-  }
-
   chunks[1] = swapCharacterInNextBlock(chunks[1], 6, '2', '=');
   chunks[1] = swapCharacterInNextBlock(chunks[1], 0, '-', ';');
   const modifiedCiphertext = unchunk(chunks);
@@ -69,5 +67,5 @@ function challengeSixteen() {
 
 module.exports = {
   run: challengeSixteen,
-  describe: 'Flipping a bit in a block destroys that block, but flips the identical bit in the next block.',
+  describe: 'Flipping a bit in a block flips the identical bit in the next block.',
 };

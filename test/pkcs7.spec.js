@@ -49,7 +49,7 @@ describe('PKCS7', () => {
       expect(strip(message)).to.be.eq('abc');
     });
 
-    it('should correctly strip a manually created message with more than one byte of padding', () => {
+    it('should correctly strip a message with more than one byte of padding', () => {
       const message = `abc${String.fromCharCode(4).repeat(4)}`;
       expect(strip(message)).to.be.eq('abc');
     });
