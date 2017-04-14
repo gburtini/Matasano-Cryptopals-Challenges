@@ -26,7 +26,7 @@ Set 2: Block crypto
 - [ECB cut-and-paste](sets/2/13.js)
 - [Byte-at-a-time ECB decryption (Harder)](sets/2/14.js)
 - [PKCS#7 padding validation](sets/2/15.js)
-- CBC bitflipping attacks
+- [CBC bitflipping attacks](sets/2/16.js)
 
 Set 3: Block & stream crypto
 - The CBC padding oracle
