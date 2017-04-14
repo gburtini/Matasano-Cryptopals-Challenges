@@ -8,6 +8,7 @@ const inputFile = fs.readFileSync(path.join(__dirname, '../../assets/2-10.txt'))
 
 function challengeTen() {
   const IV = aes.pkcs7Pad('', 16, '\x00');
+
   const ecbSettings = { key: 'YELLOW SUBMARINE' };
 
   const ciphertext = decodeBase64(inputFile);

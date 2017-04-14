@@ -3,9 +3,7 @@ const path = require('path');
 const { decodeHex } = require('../../lib/stream');
 const { isEcb } = require('../../lib/aes');
 
-const inputFile = fs.readFileSync(
-  path.join(__dirname, '../../assets/1-8.txt')
-);
+const inputFile = fs.readFileSync(path.join(__dirname, '../../assets/1-8.txt'));
 
 function challengeEight() {
   const records = inputFile.toString().split('\n');

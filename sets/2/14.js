@@ -1,19 +1,24 @@
 const fs = require('fs');
 const path = require('path');
-const { chunk, decodeBase64, naiveStringToBytes, naiveBytesToString } = require('../../lib/stream');
+const {
+  chunk,
+  decodeBase64,
+  naiveBytesToString,
+} = require('../../lib/stream');
 const aes = require('../../lib/aes');
-const aesjs = require('aes-js');
 const attacks = require('../../lib/attacks');
 const scores = require('../../lib/scores');
 
-const inputFile = fs.readFileSync(path.join(__dirname, '../../assets/2-12.txt'), 'base64');
-const prefixBytes = naiveBytesToString(aes.randomBytes(Math.floor(Math.random() * 15) + 1));
+const inputFile = fs.readFileSync(
+  path.join(__dirname, '../../assets/2-12.txt'),
+  'base64'
+);
+const prefixBytes = naiveBytesToString(
+  aes.randomBytes(Math.floor(Math.random() * 15) + 1)
+);
 
 function challengeFourteen() {
-  const unknownString = naiveBytesToString(
-    decodeBase64(inputFile)
-  );
-
+  const unknownString = naiveBytesToString(decodeBase64(inputFile));
 
   function cipher(known, unknown = '', key = 'YELLOW SUBMARINE') {
     // NOTE: Cipher should be interpreted as being a blackbox we don't control.
@@ -22,9 +27,11 @@ function challengeFourteen() {
     const ecbSettings = {
       key,
     };
-    return aes.encrypt.ecb(ecbSettings, aes.pkcs7Pad(prefixBytes + known + unknown));
+    return aes.encrypt.ecb(
+      ecbSettings,
+      aes.pkcs7Pad(prefixBytes + known + unknown)
+    );
   }
-
 
   const blockSize = aes.detectBlockSize(cipher);
   const mode = aes.modeOracle(cipher);
@@ -36,14 +43,18 @@ function challengeFourteen() {
   const answers = [];
   for (let paddingSize = 0; paddingSize < blockSize; paddingSize++) {
     try {
-      const candidatePlaintext = chunks.reduce((acc, thisBlock) => {
-        return acc + attacks.breakKnownPrefixEcb(
-          thisBlock.join(''),
-          cipher,
-          blockSize,
-          paddingSize
-        );
-      }, '');
+      const candidatePlaintext = chunks.reduce(
+        (acc, thisBlock) => {
+          return acc +
+            attacks.breakKnownPrefixEcb(
+              thisBlock.join(''),
+              cipher,
+              blockSize,
+              paddingSize
+            );
+        },
+        ''
+      );
 
       answers.push({
         offset: paddingSize,

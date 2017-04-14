@@ -4,12 +4,13 @@ const { chunk, decodeBase64, naiveBytesToString } = require('../../lib/stream');
 const aes = require('../../lib/aes');
 const attacks = require('../../lib/attacks');
 
-const inputFile = fs.readFileSync(path.join(__dirname, '../../assets/2-12.txt'), 'base64');
+const inputFile = fs.readFileSync(
+  path.join(__dirname, '../../assets/2-12.txt'),
+  'base64'
+);
 
 function challengeTwelve() {
-  const unknownString = naiveBytesToString(
-    decodeBase64(inputFile)
-  );
+  const unknownString = naiveBytesToString(decodeBase64(inputFile));
 
   function cipher(known, unknown = '', key = 'YELLOW SUBMARINE') {
     // NOTE: Cipher should be interpreted as being a blackbox we don't control.
@@ -23,16 +24,16 @@ function challengeTwelve() {
 
   const blockSize = aes.detectBlockSize(cipher);
   const mode = aes.modeOracle(cipher);
-  if (mode !== 'ecb') throw new Error('Byte-at-a-time decryption only supports ECB.');
+  if (mode !== 'ecb') { throw new Error('Byte-at-a-time decryption only supports ECB.'); }
 
   const chunks = chunk(unknownString, blockSize);
-  return chunks.reduce((acc, thisBlock) => {
-    return acc + attacks.breakKnownPrefixEcb(
-      thisBlock.join(''),
-      cipher,
-      blockSize
-    );
-  }, '');
+  return chunks.reduce(
+    (acc, thisBlock) => {
+      return acc +
+        attacks.breakKnownPrefixEcb(thisBlock.join(''), cipher, blockSize);
+    },
+    ''
+  );
 }
 
 module.exports = {

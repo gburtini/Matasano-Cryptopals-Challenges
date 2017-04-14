@@ -10,7 +10,9 @@ describe('PKCS7', () => {
     it('should correctly pad all short lengths to 16 bytes', () => {
       for (let i = 1; i < 15; i++) {
         const expectedPadding = String.fromCharCode(16 - i).repeat(16 - i);
-        expect(pad('a'.repeat(i), 16)).to.be.eq('a'.repeat(i) + expectedPadding);
+        expect(pad('a'.repeat(i), 16)).to.be.eq(
+          'a'.repeat(i) + expectedPadding
+        );
       }
     });
 
@@ -48,7 +50,7 @@ describe('PKCS7', () => {
     });
 
     it('should correctly strip a manually created message with more than one byte of padding', () => {
-      const message = 'abc' + String.fromCharCode(4).repeat(4);
+      const message = `abc${String.fromCharCode(4).repeat(4)}`;
       expect(strip(message)).to.be.eq('abc');
     });
 
@@ -57,7 +59,7 @@ describe('PKCS7', () => {
       // e.g., a 4 byte padding of \x02 is indistinguishable from a true 2 byte padding
       // on a message that ended in two \x02s.
 
-      const message = 'abc' + String.fromCharCode(4).repeat(2);
+      const message = `abc${String.fromCharCode(4).repeat(2)}`;
       expect(() => strip(message)).to.throw(Error);
     });
 
@@ -67,4 +69,3 @@ describe('PKCS7', () => {
     });
   });
 });
-

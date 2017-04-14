@@ -1,11 +1,15 @@
 /* eslint-disable no-unused-vars */
 const fs = require('fs');
-const { chunk, decodeBase64, naiveStringToBytes, naiveBytesToString } = require('../../lib/stream');
+const {
+  chunk,
+  decodeBase64,
+  naiveStringToBytes,
+  naiveBytesToString,
+} = require('../../lib/stream');
 const aes = require('../../lib/aes');
 const xor = require('../../lib/xor');
 const aesjs = require('aes-js');
 const _ = require('lodash');
-
 
 function challengeThirteen() {
   function readQueryString(queryString) {
@@ -43,26 +47,22 @@ function challengeThirteen() {
     key: 'aaaaaaaaaaaaaaaa',
   };
 
-
   const originPlaintext = aes.pkcs7Pad(profileFor('foo@bar.com'));
   const ciphertext = naiveBytesToString(
     aes.encrypt.ecb(ecbSettings, originPlaintext)
   );
-  const replacement = aes.pkcs7Pad('m&uid=10&role=admin');  // block size rounding here.
+  const replacement = aes.pkcs7Pad('m&uid=10&role=admin'); // block size rounding here.
   const replacementCipher = naiveBytesToString(
-    aes.encrypt.ecb(
-      ecbSettings,
-      replacement
-    )
+    aes.encrypt.ecb(ecbSettings, replacement)
   );
 
-  const prefix = ciphertext.substring(0, ciphertext.length - replacementCipher.length);
+  const prefix = ciphertext.substring(
+    0,
+    ciphertext.length - replacementCipher.length
+  );
   const compromisedCipher = prefix + replacementCipher;
   const plaintext = naiveBytesToString(
-    aes.decrypt.ecb(
-      ecbSettings,
-      compromisedCipher
-    )
+    aes.decrypt.ecb(ecbSettings, compromisedCipher)
   );
 
   return plaintext;
