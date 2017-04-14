@@ -1,16 +1,19 @@
-const { naiveStringToBytes } = require('../../lib/stream');
 const aes = require('../../lib/aes');
-const aesjs = require('aes-js');
 
 function challengeEleven() {
   const aesMode = (Math.random() < 0.5) ? 'ecb' : 'cbc';
 
   function randomEncrypt(plaintext) {
     const randomBytes = aes.randomBytes(5 + Math.floor(Math.random() * 5));
-    const key = naiveStringToBytes(aes.randomKey());
+    const aesSettings = {
+      key: aes.randomKey(),
+      iv: aes.pkcs7Pad('', 16, '\x00'),
+    };
 
-    return new aesjs.ModeOfOperation[aesMode](key).encrypt(
-      naiveStringToBytes(aes.pkcs7Pad(`${randomBytes}${plaintext}${randomBytes}`))
+    const augmentedPlaintext = aes.pkcs7Pad(`${randomBytes}${plaintext}${randomBytes}`);
+    return aes.encrypt[aesMode](
+      aesSettings,
+      augmentedPlaintext
     );
   }
 

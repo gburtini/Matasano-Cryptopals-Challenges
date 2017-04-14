@@ -14,14 +14,17 @@ function challengeFourteen() {
     decodeBase64(inputFile)
   );
 
-  function cipher(known, unknown = '', key = 'aaaaaaaaaaaaaaaa') {
-    return new aesjs.ModeOfOperation.ecb(naiveStringToBytes(key))
-      .encrypt(
-        naiveStringToBytes(
-          aes.pkcs7Pad(prefixBytes + known + unknown)
-        )
-      );
+
+  function cipher(known, unknown = '', key = 'YELLOW SUBMARINE') {
+    // NOTE: Cipher should be interpreted as being a blackbox we don't control.
+    // i.e., imagine it as a server that you can ask to encrypt some known text
+    // and it will add the unknown text to it.
+    const ecbSettings = {
+      key,
+    };
+    return aes.encrypt.ecb(ecbSettings, aes.pkcs7Pad(prefixBytes + known + unknown));
   }
+
 
   const blockSize = aes.detectBlockSize(cipher);
   const mode = aes.modeOracle(cipher);

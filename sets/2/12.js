@@ -1,8 +1,7 @@
 const fs = require('fs');
 const path = require('path');
-const { chunk, decodeBase64, naiveStringToBytes, naiveBytesToString } = require('../../lib/stream');
+const { chunk, decodeBase64, naiveBytesToString } = require('../../lib/stream');
 const aes = require('../../lib/aes');
-const aesjs = require('aes-js');
 const attacks = require('../../lib/attacks');
 
 const inputFile = fs.readFileSync(path.join(__dirname, '../../assets/2-12.txt'), 'base64');
@@ -16,12 +15,10 @@ function challengeTwelve() {
     // NOTE: Cipher should be interpreted as being a blackbox we don't control.
     // i.e., imagine it as a server that you can ask to encrypt some known text
     // and it will add the unknown text to it.
-    return new aesjs.ModeOfOperation.ecb(naiveStringToBytes(key))
-      .encrypt(
-        naiveStringToBytes(
-          aes.pkcs7Pad(known + unknown)
-        )
-      );
+    const ecbSettings = {
+      key,
+    };
+    return aes.encrypt.ecb(ecbSettings, aes.pkcs7Pad(known + unknown));
   }
 
   const blockSize = aes.detectBlockSize(cipher);

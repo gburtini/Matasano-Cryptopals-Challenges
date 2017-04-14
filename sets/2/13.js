@@ -39,22 +39,31 @@ function challengeThirteen() {
     });
   }
 
-  const encryptionLibrary = new aesjs.ModeOfOperation.ecb(naiveStringToBytes('aaaaaaaaaaaaaaaa'));
-  const ciphertext = naiveBytesToString(encryptionLibrary.encrypt(
-    naiveStringToBytes(aes.pkcs7Pad(profileFor('foo@bar.com')))
-  ));
-  const replacement = 'm&uid=10&role=admin';  // block size rounding here.
+  const ecbSettings = {
+    key: 'aaaaaaaaaaaaaaaa',
+  };
+
+
+  const originPlaintext = aes.pkcs7Pad(profileFor('foo@bar.com'));
+  const ciphertext = naiveBytesToString(
+    aes.encrypt.ecb(ecbSettings, originPlaintext)
+  );
+  const replacement = aes.pkcs7Pad('m&uid=10&role=admin');  // block size rounding here.
   const replacementCipher = naiveBytesToString(
-    encryptionLibrary.encrypt(
-      naiveStringToBytes(aes.pkcs7Pad(replacement))
+    aes.encrypt.ecb(
+      ecbSettings,
+      replacement
     )
   );
 
   const prefix = ciphertext.substring(0, ciphertext.length - replacementCipher.length);
   const compromisedCipher = prefix + replacementCipher;
-  const plaintext = naiveBytesToString(encryptionLibrary.decrypt(
-    naiveStringToBytes(compromisedCipher)
-  ));
+  const plaintext = naiveBytesToString(
+    aes.decrypt.ecb(
+      ecbSettings,
+      compromisedCipher
+    )
+  );
 
   return plaintext;
 }
