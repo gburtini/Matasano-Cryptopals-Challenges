@@ -45,7 +45,7 @@ function challengeSixteen() {
     return plaintext.indexOf(';admin=true;') !== -1;
   }
 
-  // it should not be possible to directly provide admin=true to the ciphertext generator.
+  // per the challenge, it should not be possible to directly provide admin=true to the ciphertext generator.
   assert.equal(
     validator(ciphertextGenerator(';admin=true;')),
     false,
@@ -58,6 +58,8 @@ function challengeSixteen() {
   chunks[1] = swapCharacterInNextBlock(chunks[1], 6, '2', '=');
   chunks[1] = swapCharacterInNextBlock(chunks[1], 0, '-', ';');
   const modifiedCiphertext = unchunk(chunks);
+
+  // challenge requires that we have successfully added admin=true to our ciphertext. check that this is true.
   assert.ok(
     validator(modifiedCiphertext),
     'Modified ciphertext did not include ;admin=true; as desired.'
