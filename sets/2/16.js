@@ -19,9 +19,8 @@ function swapCharacterInNextBlock(block, location, from, to) {
   return clonedArray;
 }
 
-const key = aes.randomKey();
-
 function challengeSixteen() {
+  const key = aes.randomKey();
   const cbcSettings = {
     key,
     iv: aes.pkcs7Pad('', 16, '\x00'),
@@ -33,9 +32,7 @@ function challengeSixteen() {
     const escapedString = inputString.replace(';', '";"').replace('=', '"="');
     const toBeEncrypted = `${prepend}${escapedString}${append}`;
 
-    return naiveBytesToString(
-      aes.encrypt.cbc(cbcSettings, aes.pkcs7Pad(toBeEncrypted))
-    );
+    return naiveBytesToString(aes.encrypt.cbc(cbcSettings, aes.pkcs7Pad(toBeEncrypted)));
   }
   function decrypt(ciphertext) {
     return naiveBytesToString(aes.decrypt.cbc(cbcSettings, ciphertext));
