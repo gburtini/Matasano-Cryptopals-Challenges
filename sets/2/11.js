@@ -10,9 +10,7 @@ function challengeEleven() {
       iv: aes.pkcs7Pad('', 16, '\x00'),
     };
 
-    const augmentedPlaintext = aes.pkcs7Pad(
-      `${randomBytes}${plaintext}${randomBytes}`
-    );
+    const augmentedPlaintext = aes.pkcs7Pad(`${randomBytes}${plaintext}${randomBytes}`);
     return aes.encrypt[aesMode](aesSettings, augmentedPlaintext);
   }
 

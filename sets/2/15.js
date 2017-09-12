@@ -2,18 +2,12 @@ const { stripPkcs7Pad } = require('../../lib/aes');
 const assert = require('assert');
 
 function challengeFifteen() {
-  const invalidStrings = [
-    'ICE ICE BABY\x05\x05\x05\x05',
-    'ICE ICE BABY\x01\x02\x03\x04',
-  ];
+  const invalidStrings = ['ICE ICE BABY\x05\x05\x05\x05', 'ICE ICE BABY\x01\x02\x03\x04'];
 
   invalidStrings.forEach((invalidString) => {
-    assert.throws(
-      () => {
-        stripPkcs7Pad(invalidString);
-      },
-      Error
-    );
+    assert.throws(() => {
+      stripPkcs7Pad(invalidString);
+    }, Error);
   });
 
   const string = 'ICE ICE BABY\x04\x04\x04\x04';

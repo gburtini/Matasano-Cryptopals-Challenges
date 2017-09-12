@@ -6,18 +6,12 @@ const { breakRepeatingKeyXor } = require('../../lib/attacks');
 const scores = require('../../lib/scores');
 const assert = require('assert');
 
-const inputFile = fs.readFileSync(
-  path.join(__dirname, '../../assets/1-6.txt'),
-  'base64'
-);
+const inputFile = fs.readFileSync(path.join(__dirname, '../../assets/1-6.txt'), 'base64');
 
 function challengeSix() {
   // for diagnostics... breakRepeatingKeyXor is dependent on Hamming score.
   assert.equal(
-    scores.hamming(
-      new Buffer('this is a test', 'ascii'),
-      new Buffer('wokka wokka!!!', 'ascii')
-    ),
+    scores.hamming(new Buffer('this is a test', 'ascii'), new Buffer('wokka wokka!!!', 'ascii')),
     37
   );
 
