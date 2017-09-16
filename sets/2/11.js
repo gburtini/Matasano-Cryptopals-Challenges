@@ -7,7 +7,7 @@ function challengeEleven() {
     const randomBytes = aes.randomBytes(5 + Math.floor(Math.random() * 5));
     const aesSettings = {
       key: aes.randomKey(),
-      iv: aes.pkcs7Pad('', 16, '\x00'),
+      iv: aes.arbitraryPad('', 16, '\x00'),
     };
 
     const augmentedPlaintext = aes.pkcs7Pad(`${randomBytes}${plaintext}${randomBytes}`);

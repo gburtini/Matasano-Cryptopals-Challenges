@@ -23,7 +23,7 @@ function challengeSixteen() {
   const key = aes.randomKey();
   const cbcSettings = {
     key,
-    iv: aes.pkcs7Pad('', 16, '\x00'),
+    iv: aes.arbitraryPad('', 16, '\x00'),
   };
   function ciphertextGenerator(inputString) {
     const prepend = 'comment1=cooking%20MCs;userdata='; // 32 bytes.
