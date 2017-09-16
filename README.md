@@ -29,7 +29,7 @@ Set 2: Block crypto
 - [CBC bitflipping attacks](sets/2/16.js)
 
 Set 3: Block & stream crypto
-- The CBC padding oracle
+- [The CBC padding oracle](sets/3/17.js)
 - Implement CTR, the stream cipher mode
 - Break fixed-nonce CTR mode using substitions
 - Break fixed-nonce CTR statistically

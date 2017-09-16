@@ -142,7 +142,6 @@ function challengeSeventeen() {
     console.log('Plaintext', i, 'recovered:', plaintext);
   }
 }
-challengeSeventeen();
 
 module.exports = {
   run: challengeSeventeen,
