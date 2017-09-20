@@ -1,13 +1,13 @@
 const fs = require('fs');
 const path = require('path');
-const { chunk, decodeBase64 } = require('../../lib/stream');
+const { chunk, decodeBase64, naiveStringToBytes } = require('../../lib/stream');
 const aes = require('../../lib/aes');
 const xor = require('../../lib/xor');
 
 const inputFile = fs.readFileSync(path.join(__dirname, '../../assets/2-10.txt'));
 
 function challengeTen() {
-  const IV = aes.pkcs7Pad('', 16, '\x00');
+  const IV = naiveStringToBytes(aes.pkcs7Pad('', 16, '\x00'));
 
   const ecbSettings = { key: 'YELLOW SUBMARINE' };
 
