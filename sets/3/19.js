@@ -127,7 +127,7 @@ function challengeNineteen() {
     );
   }
 
-  // proof that it works: https://cl.ly/0r0A3c3f0D1w
+  // This was instructed to be a manual process, so here's proof that it works: https://cl.ly/0r0A3c3f0D1w
   outputValues();
   collectNewValue();
 }
