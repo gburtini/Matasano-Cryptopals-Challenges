@@ -62,28 +62,26 @@ QSB0ZXJyaWJsZSBiZWF1dHkgaXMgYm9ybi4=`
     );
   });
 
-function challengeNineteen() {
-  const knowledge = new Array(INPUTS.length);
-  const currentKeyGuess = [];
-  for (let i = 0; i < INPUTS.length; i++) {
-    knowledge[i] = [];
+function buildAsteriskString(input, guessed) {
+  function setCharAt(str, index, chr) {
+    if (index > str.length - 1) return str;
+    return str.substr(0, index) + chr + str.substr(index + 1);
   }
-  function buildString(input, guessed) {
-    function setCharAt(str, index, chr) {
-      if (index > str.length - 1) return str;
-      return str.substr(0, index) + chr + str.substr(index + 1);
-    }
 
-    let string = '*'.repeat(input.length);
-    guessed.forEach((guess, i) => {
-      if (guess !== undefined) string = setCharAt(string, i, guess);
-    });
-    return string;
-  }
+  let string = '*'.repeat(input.length);
+  guessed.forEach((guess, i) => {
+    if (guess !== undefined) string = setCharAt(string, i, guess);
+  });
+  return string;
+}
+
+function challengeNineteen() {
+  const knowledge = [...Array(INPUTS.length)].map(() => []);
+  const currentKeyGuess = [];
 
   function outputValues() {
     INPUTS.forEach((str, i) => {
-      console.log(util.format('%s\t%s', i, buildString(str, knowledge[i])));
+      console.log(util.format('%s\t%s', i, buildAsteriskString(str, knowledge[i])));
     });
   }
 
@@ -105,18 +103,16 @@ function challengeNineteen() {
         const [string, index, character] = answer.split(' ');
 
         // compute xor(input, that_string) to get the effective key for that character
-        const key = naiveBytesToString(
-          xor.many(
-            naiveStringToBytes(INPUTS[string]),
-            naiveStringToBytes(character.repeat(INPUTS[string].length))
-          )
+        const key = xor.many(
+          naiveStringToBytes(INPUTS[string]),
+          naiveStringToBytes(character.repeat(INPUTS[string].length))
         )[index];
         currentKeyGuess[index] = key;
 
         // xor that key against all the other plaintexts to see if they're sensical.
         INPUTS.forEach((str, i) => {
           knowledge[i][index] = naiveBytesToString(
-            xor.many(naiveStringToBytes(str), naiveStringToBytes(key.repeat(str.length)))
+            xor.many(naiveStringToBytes(str), Array(str.length).fill(key))
           )[index];
         });
         knowledge[string][index] = character;
