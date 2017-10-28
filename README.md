@@ -30,8 +30,8 @@ Set 2: Block crypto
 
 Set 3: Block & stream crypto
 - [The CBC padding oracle](sets/3/17.js)
-- Implement CTR, the stream cipher mode
-- Break fixed-nonce CTR mode using substitions
+- [Implement CTR, the stream cipher mode](sets/3/18.js)
+- [Break fixed-nonce CTR mode using substitions](sets/3/19.js)
 - Break fixed-nonce CTR statistically
 - Implement the MT19937 Mersenne Twister RNG
 - Crack an MT19937 seed
