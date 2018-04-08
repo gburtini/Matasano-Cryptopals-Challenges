@@ -1,4 +1,4 @@
-#! /usr/bin/env node --harmony
+#! /usr/bin/env node
 const challenges = require('./sets');
 const program = require('commander');
 const colors = require('colors');
@@ -18,7 +18,7 @@ function runOne(n) {
 }
 
 function runAll() {
-  Object.keys(challenges).forEach((challenge) => {
+  Object.keys(challenges).forEach(challenge => {
     runOne(challenge);
   });
 }
@@ -27,7 +27,6 @@ program
   .version('0.0.1')
   .option('-s --single [n]', 'The individual challenge to run.', parseInt)
   .parse(process.argv);
-
 const challengeNumber = program.single;
 try {
   if (!challengeNumber) runAll();
