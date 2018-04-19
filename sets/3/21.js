@@ -10,7 +10,7 @@ function challengeTwentyOne() {
     points.push([test(), test()]);
   }
 
-  // Test by computing a^2 + b^2 <= 2^64 for two randoms.
+  // Test by computing a^2 + b^2 <= 2^64 for two randoms... testing idea from this guy: https://medium.com/@__cpg/cryptopals-3-mt19937-bf0e8f209741
   const total = points
     .map((set) => {
       // I think this overflows.

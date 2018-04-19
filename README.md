@@ -37,7 +37,7 @@ Set 3: Block & stream crypto
 * [Break fixed-nonce CTR mode using substitions](sets/3/19.js)
 * [Break fixed-nonce CTR statistically](sets/3/20.js)
 * [Implement the MT19937 Mersenne Twister RNG](sets/3/21.js)
-* Crack an MT19937 seed
+* [Crack an MT19937 seed](sets/3/22.js)
 * Clone an MT19937 RNG from its output
 * Create the MT19937 stream cipher and break it
 
