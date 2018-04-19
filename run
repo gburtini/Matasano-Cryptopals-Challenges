@@ -19,6 +19,10 @@ function runOne(n) {
 
 function runAll() {
   Object.keys(challenges).forEach(challenge => {
+    if (challenge === '19') {
+      console.log('Skipping 19 because it is interactive.');
+      return;
+    }
     runOne(challenge);
   });
 }
@@ -27,6 +31,7 @@ program
   .version('0.0.1')
   .option('-s --single [n]', 'The individual challenge to run.', parseInt)
   .parse(process.argv);
+
 const challengeNumber = program.single;
 try {
   if (!challengeNumber) runAll();
