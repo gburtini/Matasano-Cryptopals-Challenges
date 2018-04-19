@@ -3,7 +3,7 @@ const challenges = require('./sets');
 const program = require('commander');
 const colors = require('colors');
 
-function runOne(n) {
+async function runOne(n) {
   if (!challenges[n]) {
     throw new Error(`Failed to run ${n}. Missing sets/*/${n}.js.`);
   }
@@ -11,20 +11,20 @@ function runOne(n) {
   console.log(colors.bold(`*** Challenge ${n} ***`));
   if (challenges[n].describe) console.log(challenges[n].describe);
 
-  const retVal = challenges[n].run();
+  const retVal = await challenges[n].run();
   if (typeof retVal !== 'undefined') {
     console.log(colors.green('Return Value:'), retVal);
   }
 }
 
-function runAll() {
-  Object.keys(challenges).forEach(challenge => {
+async function runAll() {
+  for (const challenge of Object.keys(challenges)) {
     if (challenge === '19') {
       console.log('Skipping 19 because it is interactive.');
-      return;
+    } else {
+      await runOne(challenge);
     }
-    runOne(challenge);
-  });
+  }
 }
 
 program
@@ -34,9 +34,10 @@ program
 
 const challengeNumber = program.single;
 try {
-  if (!challengeNumber) runAll();
-  else runOne(challengeNumber);
+  if (!challengeNumber) runAll().then(process.exit);
+  else runOne(challengeNumber).then(process.exit);
 } catch (e) {
+  // This now handles UnhandledRejections... that's ok though.
   if (e.message) {
     console.log(colors.bgRed('Failure:'), e.stack);
   } else {
