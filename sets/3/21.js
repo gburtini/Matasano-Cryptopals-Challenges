@@ -4,7 +4,7 @@ const mt19937 = require('./../../lib/mt19937');
 
 function challengeTwentyOne() {
   // This successfully generates good numbers. I think.
-  const test = mt19937(1);
+  const test = mt19937.create(1);
   const points = [];
   for (let i = 0; i < 32000; i++) {
     points.push([test(), test()]);
