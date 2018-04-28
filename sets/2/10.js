@@ -17,7 +17,7 @@ function challengeTen() {
   let previousBlock = IV;
   return chunkedCiphertext.reduce((acc, currentBlock) => {
     const temporaryCurrentPlaintext = aes.decrypt.ecb(ecbSettings, currentBlock);
-    const nextCipherBlock = xor.byte(previousBlock, temporaryCurrentPlaintext);
+    const nextCipherBlock = xor.bytes(previousBlock, temporaryCurrentPlaintext);
 
     previousBlock = currentBlock;
     return acc + nextCipherBlock;
