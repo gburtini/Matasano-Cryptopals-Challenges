@@ -1,7 +1,7 @@
 const aes = require('../../lib/aes');
 const xor = require('./../../lib/xor');
 
-const { unchunk, chunk, naiveBytesToString } = require('../../lib/stream');
+const { naiveBytesToString } = require('../../lib/stream');
 const assert = require('assert');
 
 function challenge() {
@@ -23,6 +23,7 @@ function challenge() {
   }
   function validator(modifiedCiphertext) {
     const plaintext = decrypt(modifiedCiphertext);
+    console.log(plaintext);
     return plaintext.indexOf(';admin=true;') !== -1;
   }
 
@@ -36,10 +37,18 @@ function challenge() {
     'Make sure the known and target text are identical length.'
   );
   const injectedKey = xor.bytes(
-    new Buffer(knownPlaintext),
-    new Buffer(originalCiphertext.substr(start, targetPlaintext.length))
+    new Buffer(knownPlaintext, 'utf8'),
+    new Buffer(originalCiphertext, 'utf8').slice(start, start + targetPlaintext.length)
   );
-  const injectedCiphertext = xor.bytes(new Buffer(targetPlaintext), new Buffer(injectedKey));
+
+  console.log(
+    new Buffer(knownPlaintext, 'utf8'),
+    new Buffer(originalCiphertext, 'utf8').slice(start, start + targetPlaintext.length),
+    injectedKey
+  );
+  const injectedCiphertext = naiveBytesToString(
+    xor.bytes(new Buffer(targetPlaintext), injectedKey)
+  );
 
   const modifiedCiphertext = `${originalCiphertext.slice(
     0,
