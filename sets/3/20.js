@@ -12,6 +12,7 @@ function challengeTwenty() {
     .split('\n')
     .map(decodeBase64)
     .map((i) => {
+      if (!i.length) return false; // the last line is empty.
       return aes.encrypt.ctr(
         {
           key: 'YELLOW SUBMARINE',
