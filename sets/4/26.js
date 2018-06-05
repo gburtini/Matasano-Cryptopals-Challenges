@@ -1,7 +1,7 @@
 const aes = require('../../lib/aes');
 const xor = require('./../../lib/xor');
 
-const { naiveBytesToString } = require('../../lib/stream');
+const { naiveBytesToString, naiveStringToBytes } = require('../../lib/stream');
 const assert = require('assert');
 
 function challenge() {
@@ -16,46 +16,40 @@ function challenge() {
     const escapedString = inputString.replace(';', '";"').replace('=', '"="');
     const toBeEncrypted = `${prepend}${escapedString}${append}`;
 
-    return naiveBytesToString(aes.encrypt.ctrNative(ctrSettings, aes.pkcs7Pad(toBeEncrypted)));
+    return naiveBytesToString(aes.encrypt.ctrNative(ctrSettings, toBeEncrypted));
   }
   function decrypt(ciphertext) {
     return naiveBytesToString(aes.decrypt.ctrNative(ctrSettings, ciphertext));
   }
   function validator(modifiedCiphertext) {
     const plaintext = decrypt(modifiedCiphertext);
-    console.log(plaintext);
     return plaintext.indexOf(';admin=true;') !== -1;
   }
 
-  const originalCiphertext = ciphertextGenerator('bogus');
-  const knownPlaintext = 'oking%20MCs;'; // we're going to inject in the middle of prepend.
-  const targetPlaintext = ';admin=true;';
-  const start = 11;
+  const targetPlaintext = '1234;admin=true;';
+  const knownPlaintext = 'aaaaaaaaaaaaaaaa';
+  const token = ciphertextGenerator(knownPlaintext);
+  const prependPosition = 32;
 
   assert.ok(
     knownPlaintext.length === targetPlaintext.length,
     'Make sure the known and target text are identical length.'
   );
+
   const injectedKey = xor.bytes(
-    new Buffer(knownPlaintext, 'utf8'),
-    new Buffer(originalCiphertext, 'utf8').slice(start, start + targetPlaintext.length)
+    naiveStringToBytes(knownPlaintext),
+    naiveStringToBytes(token).slice(prependPosition, prependPosition + targetPlaintext.length)
   );
 
-  console.log(
-    new Buffer(knownPlaintext, 'utf8'),
-    new Buffer(originalCiphertext, 'utf8').slice(start, start + targetPlaintext.length),
-    injectedKey
-  );
   const injectedCiphertext = naiveBytesToString(
-    xor.bytes(new Buffer(targetPlaintext), injectedKey)
+    xor.bytes(naiveStringToBytes(targetPlaintext), injectedKey)
   );
 
-  const modifiedCiphertext = `${originalCiphertext.slice(
-    0,
-    start
-  )}${injectedCiphertext}${originalCiphertext.slice(start + injectedCiphertext.length)}`;
+  const modifiedCiphertext = `${token.slice(0, prependPosition)}${injectedCiphertext}${token.slice(
+    prependPosition + injectedCiphertext.length
+  )}`;
 
-  // challenge requires that we have successfully added admin=true to our ciphertext. check that this is true.
+  // challenge requires that we have successfully added admin=true to our ciphertext.
   assert.ok(
     validator(modifiedCiphertext),
     'Modified ciphertext did not include ;admin=true; as desired.'
