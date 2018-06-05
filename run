@@ -4,20 +4,33 @@ const program = require('commander');
 const colors = require('colors');
 
 async function runOne(n) {
-  if (!challenges[n]) {
-    throw new Error(`Failed to run ${n}. Missing sets/*/${n}.js.`);
-  }
+  let retVal;
 
-  console.log(colors.bold(`*** Challenge ${n} ***`));
-  if (challenges[n].describe) console.log(challenges[n].describe);
+  try {
+    if (!challenges[n]) {
+      throw new Error(`Failed to run ${n}. Missing sets/*/${n}.js.`);
+    }
 
-  const retVal = await challenges[n].run();
-  if (typeof retVal !== 'undefined') {
-    console.log(colors.green('Return Value:'), retVal);
+    console.log(colors.bold(`*** Challenge ${n} ***`));
+    if (challenges[n].describe) console.log(challenges[n].describe);
+
+    retVal = await challenges[n].run();
+    if (typeof retVal !== 'undefined') {
+      console.log(colors.green('Return Value:'), retVal);
+    }
+  } catch (e) {
+    if (e.message) {
+      console.log(colors.bgRed('Failure:'), e.stack);
+    } else {
+      console.log(colors.bgRed('Error: Exception with no `.message`. Please throw Error objects.'));
+      console.log(e);
+    }
   }
+  return retVal;
 }
 
 async function runAll() {
+  // eslint-disable-next-line no-restricted-syntax
   for (const challenge of Object.keys(challenges)) {
     if (challenge === '19') {
       console.log('Skipping 19 because it is interactive.');
@@ -33,15 +46,5 @@ program
   .parse(process.argv);
 
 const challengeNumber = program.single;
-try {
-  if (!challengeNumber) runAll().then(process.exit);
-  else runOne(challengeNumber).then(process.exit);
-} catch (e) {
-  // This now handles UnhandledRejections... that's ok though.
-  if (e.message) {
-    console.log(colors.bgRed('Failure:'), e.stack);
-  } else {
-    console.log(colors.bgRed('Error: Exception with no `.message`. Please throw Error objects.'));
-    console.log(e);
-  }
-}
+if (!challengeNumber) runAll().then(process.exit);
+else runOne(challengeNumber).then(process.exit);
