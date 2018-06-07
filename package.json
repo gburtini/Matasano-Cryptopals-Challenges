@@ -16,6 +16,7 @@
     "chai": "^3.5.0",
     "colors": "^1.1.2",
     "commander": "^2.9.0",
+    "js-sha1": "^0.6.0",
     "lodash": "^4.17.4",
     "text-encoding": "^0.6.4",
     "utf8": "^2.1.2"
