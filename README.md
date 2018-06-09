@@ -45,7 +45,7 @@ Set 4: Stream crypto and randomness
 
 * [Break "random access read/write" AES CTR](sets/4/25.js)
 * [CTR bitflipping](sets/4/26.js)
-* Recover the key from CBC with IV=Key
+* [Recover the key from CBC with IV=Key](sets/4/27.js)
 * [Implement a SHA-1 keyed MAC](sets/4/28.js)
 * Break a SHA-1 keyed MAC using length extension
 * Break an MD4 keyed MAC using length extension
