@@ -1,4 +1,5 @@
-const sha1 = require('js-sha1');
+const sha1 = require('../../lib/sha1');
+const { chunk } = require('../../lib/stream');
 const assert = require('assert');
 
 function challenge() {
@@ -16,32 +17,60 @@ function challenge() {
     };
   }
 
-  function computeMDPadding(message) {
-    const originalLength = message.length;
-    while (message.length % 64 !== 56) {
-      message += String.fromCharCode(0);
+  function generatePadding(messageLength) {
+    const originalLength = messageLength;
+    let padding = '\x80'; // TODO: why?
+    while ((messageLength + padding.length) % 64 !== 56) {
+      padding += '\x00';
     }
 
-    const byteOne = (Math.max(originalLength - 256, 0) * 8) % 256;
-    const byteTwo = (originalLength * 8) % 256;
+    const highBytes = (originalLength / 4294967296) << 0;
+    const bytes = originalLength % 4294967296;
 
-    console.log(originalLength, byteOne, byteTwo);
-    // TODO: how to represent these as packed uint64s?
-    message += String.fromCharCode(byteOne);
-    message += String.fromCharCode(byteTwo);
+    const buffer = new ArrayBuffer(8);
+    const dataView = new DataView(buffer);
+    dataView.setInt32(0, (highBytes << 3) | (bytes >>> 29));
+    dataView.setInt32(4, bytes << 3);
+    padding += new Buffer(new Uint8Array(buffer)).toString();
 
-    console.log(message.length);
-    return message;
+    return padding;
+  }
+
+  function generateStateFromHash(hash) {
+    return chunk(hash, 8).map(i => parseInt(i.join(''), 16));
+  }
+
+  function forgeMessage(keyLength, originalMessage, originalHash, suffix) {
+    const padding = generatePadding(keyLength + originalMessage.length);
+    const paddedMessage = `${originalMessage}${padding}${suffix}`;
+
+    const h = generateStateFromHash(originalHash);
+    const forgedHash = sha1(suffix, h, keyLength + paddedMessage.length);
+
+    return {
+      message: paddedMessage,
+      hash: forgedHash,
+    };
+  }
+
+  function forcefullyAppend({ message, mac }, suffix) {
+    for (let i = 1; i < 128; i++) {
+      const forged = forgeMessage(i, message, mac, suffix);
+      console.log(forged);
+      if (checkMessage(forged)) {
+        return forged;
+      }
+    }
+
+    throw new Error('We failed to find a valid key length.');
   }
 
   const plaintext = 'comment1=cooking%20MCs;userdata=foo;comment2=%20like%20a%20pound%20of%20bacon';
+
   const serverResponse = generate(plaintext);
-  computeMDPadding(plaintext);
+  const forged = forcefullyAppend(serverResponse, ';admin=true');
 
-  // TODO: monkeypatch sha1 library.
-  // TODO: forge the glue padding and ;admin=true
-
-  return true;
+  return { message: forged.message, passes: checkMessage(forged) };
 }
 
 module.exports = {

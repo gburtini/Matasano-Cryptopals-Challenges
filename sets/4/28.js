@@ -1,4 +1,4 @@
-const sha1 = require('js-sha1');
+const sha1 = require('../../lib/sha1');
 const assert = require('assert');
 
 function challenge() {
