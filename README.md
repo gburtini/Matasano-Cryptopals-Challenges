@@ -47,7 +47,7 @@ Set 4: Stream crypto and randomness
 - [CTR bitflipping](sets/4/26.js)
 - [Recover the key from CBC with IV=Key](sets/4/27.js)
 - [Implement a SHA-1 keyed MAC](sets/4/28.js)
-- ]Break a SHA-1 keyed MAC using length extension](sets/4/29.js)
+- [Break a SHA-1 keyed MAC using length extension](sets/4/29.js)
 - Break an MD4 keyed MAC using length extension
 - Implement and break HMAC-SHA1 with an artificial timing leak
 - Break HMAC-SHA1 with a slightly less artificial timing leak
