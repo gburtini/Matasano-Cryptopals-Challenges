@@ -22,6 +22,7 @@ function challenge() {
     message: 'goodbye',
   };
 
+  assert(serverResponse.mac.length === 40);
   assert(checkMessage(manipulatedResponse) === false);
   assert(checkMessage(serverResponse) === true);
   return true;

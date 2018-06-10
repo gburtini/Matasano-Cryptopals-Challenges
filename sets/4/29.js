@@ -31,9 +31,19 @@ function challenge() {
     const buffer = new ArrayBuffer(8);
     const dataView = new DataView(buffer);
 
-    dataView.setInt32(0, (highBytes << 3) | (bytes >>> 29));
-    dataView.setInt32(4, bytes << 3);
-    padding.push(...new Uint8Array(buffer));
+    padding.push(0x00);
+    padding.push(0x00);
+
+    console.log('a', bytes > 0xffffffffff ? bytes / 0x10000000000 : 0x00);
+    console.log('b', bytes > 0xffffffff ? bytes / 0x100000000 : 0x00);
+    padding.push(bytes > 0xffffffffff ? bytes / 0x10000000000 : 0x00);
+    padding.push(bytes > 0xffffffff ? bytes / 0x100000000 : 0x00);
+
+    for (let s = 24; s >= 0; s -= 8) {
+      console.log('c', bytes >> s);
+
+      padding.push(bytes >> s);
+    }
 
     return padding;
   }
@@ -47,10 +57,11 @@ function challenge() {
 
     const paddedMessage = originalMessage.slice();
     paddedMessage.push(...padding);
-    paddedMessage.push(...naiveStringToBytes(suffix));
 
     const h = generateStateFromHash(originalHash);
     const forgedHash = sha1(suffix, h, paddedMessage.length);
+
+    paddedMessage.push(...naiveStringToBytes(suffix));
 
     return {
       message: paddedMessage,
@@ -61,8 +72,16 @@ function challenge() {
   function forcefullyAppend({ message, mac }, suffix) {
     // for (let i = 1; i < 128; i++) {
     const i = secretKey.length;
+
+    console.log('\n\n\n\n');
+    console.log('clean message', message);
+    console.log(sha1(message));
+    console.log('end clean message');
     const forged = forgeMessage(i, message, mac, suffix);
     console.log(forged);
+
+    console.log('\n\n\n\n');
+    // process.exit(0);
     if (checkMessage(forged)) {
       return forged;
     }
