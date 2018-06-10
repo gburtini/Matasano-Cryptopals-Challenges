@@ -1,11 +1,12 @@
 const sha1 = require('../../lib/sha1');
-const { chunk } = require('../../lib/stream');
-const assert = require('assert');
+const { chunk, naiveStringToBytes, naiveBytesToString } = require('../../lib/stream');
 
 function challenge() {
-  const secretKey = 'YELLOW SUBMARINE';
+  const secretKey = naiveStringToBytes('YELLOW SUBMARINE');
   function sha1Mac(message) {
-    return sha1(`${secretKey}${message}`);
+    const msg = secretKey.slice();
+    msg.push(...message);
+    return sha1(msg);
   }
   function checkMessage({ message, mac }) {
     return sha1Mac(message) === mac;
@@ -19,9 +20,9 @@ function challenge() {
 
   function generatePadding(messageLength) {
     const originalLength = messageLength;
-    let padding = '\x80'; // TODO: why?
+    const padding = [0x80];
     while ((messageLength + padding.length) % 64 !== 56) {
-      padding += '\x00';
+      padding.push(0x00);
     }
 
     const highBytes = (originalLength / 4294967296) << 0;
@@ -29,9 +30,10 @@ function challenge() {
 
     const buffer = new ArrayBuffer(8);
     const dataView = new DataView(buffer);
+
     dataView.setInt32(0, (highBytes << 3) | (bytes >>> 29));
     dataView.setInt32(4, bytes << 3);
-    padding += new Buffer(new Uint8Array(buffer)).toString();
+    padding.push(...new Uint8Array(buffer));
 
     return padding;
   }
@@ -42,10 +44,13 @@ function challenge() {
 
   function forgeMessage(keyLength, originalMessage, originalHash, suffix) {
     const padding = generatePadding(keyLength + originalMessage.length);
-    const paddedMessage = `${originalMessage}${padding}${suffix}`;
+
+    const paddedMessage = originalMessage.slice();
+    paddedMessage.push(...padding);
+    paddedMessage.push(...naiveStringToBytes(suffix));
 
     const h = generateStateFromHash(originalHash);
-    const forgedHash = sha1(suffix, h, keyLength + paddedMessage.length);
+    const forgedHash = sha1(suffix, h, paddedMessage.length);
 
     return {
       message: paddedMessage,
@@ -54,18 +59,19 @@ function challenge() {
   }
 
   function forcefullyAppend({ message, mac }, suffix) {
-    for (let i = 1; i < 128; i++) {
-      const forged = forgeMessage(i, message, mac, suffix);
-      console.log(forged);
-      if (checkMessage(forged)) {
-        return forged;
-      }
+    // for (let i = 1; i < 128; i++) {
+    const i = secretKey.length;
+    const forged = forgeMessage(i, message, mac, suffix);
+    console.log(forged);
+    if (checkMessage(forged)) {
+      return forged;
     }
+    // }
 
     throw new Error('We failed to find a valid key length.');
   }
 
-  const plaintext = 'comment1=cooking%20MCs;userdata=foo;comment2=%20like%20a%20pound%20of%20bacon';
+  const plaintext = naiveStringToBytes('z');
 
   const serverResponse = generate(plaintext);
   const forged = forcefullyAppend(serverResponse, ';admin=true');
