@@ -50,7 +50,7 @@ Set 4: Stream crypto and randomness
 * [Break a SHA-1 keyed MAC using length extension](sets/4/29.js)
 * Break an MD4 keyed MAC using length extension
 * [Implement and break HMAC-SHA1 with an artificial timing leak](sets/4/31.js)
-* Break HMAC-SHA1 with a slightly less artificial timing leak
+* [Break HMAC-SHA1 with a slightly less artificial timing leak](sets/4/32.js)
 
 Set 5: Diffie-Hellman and friends
 
